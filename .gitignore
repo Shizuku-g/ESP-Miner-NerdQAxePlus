@@ -38,6 +38,7 @@ nbproject
 components/components/*
 config.bin
 config.cvs
+config-*.cvs
 managed_components/*
 release/
 esp-miner-*.bin

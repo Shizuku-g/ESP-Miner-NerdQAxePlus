@@ -17,7 +17,11 @@
     background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAzMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDA1NEIyIi8+CjxyZWN0IHg9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMjAiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjIwIiB3aWR0aD0iMTAiIGhlaWdodD0iMjAiIGZpbGw9IiNGRjAwMDAiLz4KPC9zdmc+');
   }
 
-  .flag-icon-es, .flag-icon-de, .flag-icon-it, .flag-icon-ro {
+  .flag-icon-es, .flag-icon-de, .flag-icon-it, .flag-icon-ro, .flag-icon-pl {
     background-color: #ccc;
+  }
+
+  .flag-icon-cn {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAzMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAiIGhlaWdodD0iMjAiIGZpbGw9IiNERTI5MTAiLz48cG9seWdvbiBmaWxsPSIjRkZERTAwIiBwb2ludHM9IjYsNCA3LjIsNy41IDExLDcuNSA4LDkuNSA5LDEzIDYsMTEgMywxMyA0LDkuNSAxLDcuNSA0LjgsNy41Ii8+PC9zdmc+');
   }
 }
