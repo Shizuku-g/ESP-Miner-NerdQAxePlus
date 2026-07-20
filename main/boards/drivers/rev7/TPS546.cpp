@@ -84,6 +84,15 @@ TPS546_CONFIG TPS546_create_dual_config(void)
     return config;
 }
 
+TPS546_CONFIG TPS546_create_triple_config(void)
+{
+    TPS546_CONFIG config = TPS546_create_dual_config();
+    config.iout_oc_warn_limit = 135.0f;
+    config.iout_oc_fault_limit = 150.0f;
+    config.stack_config = TPS546_INIT_STACK_CONFIG_TRIPLE;
+    return config;
+}
+
 /**
  * @brief SMBus read byte
  */
@@ -1044,8 +1053,13 @@ void TPS546_show_voltage_settings(void)
 }
 
 TPS546::TPS546(uint16_t voltage_domains)
+    : TPS546(voltage_domains, TPS546_create_dual_config())
 {
-    m_config = TPS546_create_dual_config();
+}
+
+TPS546::TPS546(uint16_t voltage_domains, const TPS546_CONFIG &config)
+{
+    m_config = config;
     m_config.vout_min = 2.0f;
     m_config.vout_command = 2.4f;
     m_voltageDomains = voltage_domains;

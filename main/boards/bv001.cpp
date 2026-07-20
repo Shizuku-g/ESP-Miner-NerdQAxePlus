@@ -10,7 +10,6 @@ Bv001::Bv001() : NerdQaxePlus2()
     m_deviceModel = "BV001";
     m_miningAgent = m_deviceModel;
     m_asicModel = "BM1373";
-    // BV001 为单颗 BM1373
     m_asicCount = 1;
 
     m_asics = new BM1373();
@@ -25,7 +24,6 @@ Bv001::Bv001() : NerdQaxePlus2()
 
 void Bv001::applyBv001AsicProfile()
 {
-    // BM1373 频率/电压参数参考 Q1373
     m_asicJobIntervalMs = 500;
     m_version = 503;
     m_asicFrequencies = {250, 275, 300, 325, 350, 375, 400, 425, 475, 500, 550};
@@ -48,7 +46,6 @@ bool Bv001::initBoard()
         return false;
     }
 
-    // rev7 检测可能覆盖 ASIC 参数，这里重新应用 BV001 配置
     applyBv001AsicProfile();
     loadSettings();
 

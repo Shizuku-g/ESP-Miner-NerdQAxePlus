@@ -1,6 +1,7 @@
 #include "bv002.h"
 
 #include "bm1373.h"
+#include "drivers/rev7/TPS546.h"
 #include "esp_log.h"
 
 static const char *TAG = "bv002";
@@ -38,6 +39,11 @@ void Bv002::applyBv002AsicProfile()
     m_asicMaxDifficulty = 4096;
     m_asicMinDifficulty = 1024;
     m_asicMinDifficultyDualPool = 512;
+}
+
+Rev7TPS546::TPS546_CONFIG Bv002::createRev7Tps546Config()
+{
+    return Rev7TPS546::TPS546_create_triple_config();
 }
 
 bool Bv002::initBoard()

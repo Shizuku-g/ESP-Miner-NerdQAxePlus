@@ -71,6 +71,7 @@
 
 #define TPS546_INIT_STACK_CONFIG_SINGLE 0x0000
 #define TPS546_INIT_STACK_CONFIG_DUAL   0x0001
+#define TPS546_INIT_STACK_CONFIG_TRIPLE 0x0002
 #define TPS546_INIT_STACK_CONFIG_QUAD   0x0003
 
 #define TPS546_INIT_SYNC_CONFIG_SINGLE 0x10
@@ -112,6 +113,7 @@ typedef struct {
 /* public functions */
 TPS546_CONFIG TPS546_create_default_config(void);
 TPS546_CONFIG TPS546_create_dual_config(void);
+TPS546_CONFIG TPS546_create_triple_config(void);
 bool TPS546_probe(void);
 int TPS546_init(void);
 int TPS546_init(const TPS546_CONFIG &config);
@@ -136,7 +138,8 @@ void TPS546_print_status(void);
 
 class TPS546 : public BuckConverter {
   public:
-    explicit TPS546(uint16_t voltage_domains = 2);
+    explicit TPS546(uint16_t voltage_domains);
+    TPS546(uint16_t voltage_domains, const TPS546_CONFIG &config);
 
     bool init(int num_phases, int imax, float ifault) override;
     void clear_faults() override;

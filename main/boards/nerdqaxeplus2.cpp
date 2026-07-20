@@ -54,6 +54,11 @@ NerdQaxePlus2::NerdQaxePlus2() : NerdQaxePlus() {
     m_vrFrequency = m_defaultVrFrequency = m_asics->getDefaultVrFrequency();
 }
 
+Rev7TPS546::TPS546_CONFIG NerdQaxePlus2::createRev7Tps546Config()
+{
+    return Rev7TPS546::TPS546_create_dual_config();
+}
+
 void NerdQaxePlus2::applyRev7Profile()
 {
     if (m_hasRev7TPS546) {
@@ -86,7 +91,7 @@ void NerdQaxePlus2::selectRev7BuckConverter()
     }
 
     delete m_tps;
-    m_tps = new Rev7TPS546::TPS546(m_rev7VoltageDomains);
+    m_tps = new Rev7TPS546::TPS546(m_rev7VoltageDomains, createRev7Tps546Config());
     applyRev7Profile();
 }
 

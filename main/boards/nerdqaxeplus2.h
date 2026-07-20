@@ -3,6 +3,7 @@
 #include "asic.h"
 #include "bm1370.h"
 #include "board.h"
+#include "drivers/rev7/TPS546.h"
 #include "nerdqaxeplus.h"
 
 class NerdQaxePlus2 : public NerdQaxePlus {
@@ -13,6 +14,9 @@ class NerdQaxePlus2 : public NerdQaxePlus {
     void applyRev7Profile();
     void selectRev7BuckConverter();
     bool probeRev7Buck();
+
+  protected:
+    virtual Rev7TPS546::TPS546_CONFIG createRev7Tps546Config();
 
   public:
     NerdQaxePlus2();

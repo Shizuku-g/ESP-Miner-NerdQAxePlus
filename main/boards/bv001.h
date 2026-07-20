@@ -2,7 +2,7 @@
 
 #include "nerdqaxeplus2.h"
 
-// BV001：基于 NerdQAxe++，单颗 BM1373，其余硬件不变
+// BV001：Based on NerdQAxe++, featuring a single BM1373 chip, with all other hardware unchanged.
 class Bv001 : public NerdQaxePlus2 {
   private:
     void applyBv001AsicProfile();
