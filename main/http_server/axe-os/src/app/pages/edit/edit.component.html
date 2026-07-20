@@ -58,7 +58,7 @@
                 <div class="form-row">
                     <label class="form-label">{{ 'SETTINGS.POOL_MODE' | translate }}:</label>
                     <div class="form-control-wrapper">
-                        <nb-select formControlName="poolMode">
+                        <nb-select formControlName="poolMode" [placeholder]="'SETTINGS.POOL_MODE' | translate">
                             <nb-option [value]="0">
                                 {{ 'SETTINGS.POOL_MODE_FAILOVER' | translate }}
                             </nb-option>
@@ -98,7 +98,7 @@
                         <div class="form-row">
                             <label class="form-label">{{ 'SETTINGS.STRATUM_PROTOCOL' | translate }}:</label>
                             <div class="form-control-wrapper">
-                                <nb-select formControlName="stratumProtocol">
+                                <nb-select formControlName="stratumProtocol" [placeholder]="'SETTINGS.STRATUM_PROTOCOL' | translate">
                                     <nb-option [value]="0">{{ 'SETTINGS.STRATUM_V1' | translate }}</nb-option>
                                     <nb-option [value]="1">{{ 'SETTINGS.STRATUM_V2' | translate }}</nb-option>
                                 </nb-select>
@@ -181,7 +181,7 @@
                             <div *ngIf="form.controls['coinbaseVerifyMode'].value > 0"
                                  style="flex: 1; min-width: 0; margin-left: 8px; display: flex; flex-direction: column; gap: 6px;">
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <nb-select formControlName="coinbaseVerifyMode" style="min-width: unset;">
+                                    <nb-select formControlName="coinbaseVerifyMode" style="min-width: unset;" [placeholder]="'SECURITY.COINBASE_VERIFY_MODE' | translate">
                                         <nb-option [value]="1">{{ 'SECURITY.COINBASE_VERIFY_BASIC' | translate }}</nb-option>
                                         <nb-option [value]="2">{{ 'SECURITY.COINBASE_VERIFY_EXTENDED' | translate }}</nb-option>
                                     </nb-select>
@@ -207,7 +207,7 @@
                         <div class="form-row">
                             <label class="form-label">{{ 'SETTINGS.STRATUM_PROTOCOL' | translate }}:</label>
                             <div class="form-control-wrapper">
-                                <nb-select formControlName="fallbackStratumProtocol">
+                                <nb-select formControlName="fallbackStratumProtocol" [placeholder]="'SETTINGS.STRATUM_PROTOCOL' | translate">
                                     <nb-option [value]="0">{{ 'SETTINGS.STRATUM_V1' | translate }}</nb-option>
                                     <nb-option [value]="1">{{ 'SETTINGS.STRATUM_V2' | translate }}</nb-option>
                                 </nb-select>
@@ -293,7 +293,7 @@
                             <div *ngIf="form.controls['fallbackCoinbaseVerifyMode'].value > 0"
                                  style="flex: 1; min-width: 0; margin-left: 8px; display: flex; flex-direction: column; gap: 6px;">
                                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    <nb-select formControlName="fallbackCoinbaseVerifyMode" style="min-width: unset;">
+                                    <nb-select formControlName="fallbackCoinbaseVerifyMode" style="min-width: unset;" [placeholder]="'SECURITY.COINBASE_VERIFY_MODE' | translate">
                                         <nb-option [value]="1">{{ 'SECURITY.COINBASE_VERIFY_BASIC' | translate }}</nb-option>
                                         <nb-option [value]="2">{{ 'SECURITY.COINBASE_VERIFY_EXTENDED' | translate }}</nb-option>
                                     </nb-select>
@@ -414,7 +414,7 @@
                         <div class="form-row">
                             <label class="form-label">{{ 'FAN.CONTROLLER' | translate }}:</label>
                             <div class="form-control-wrapper">
-                                <nb-select fullWidth formControlName="autofanspeed">
+                                <nb-select fullWidth formControlName="autofanspeed" [placeholder]="'FAN.CONTROLLER' | translate">
                                     <nb-option [value]="0">{{ 'FAN.MANUAL' | translate }}</nb-option>
                                     <nb-option *ngIf="form.controls['pidTargetTemp'].value != -1" [value]="2">{{
                                         'SETTINGS.AUTO_FAN' | translate }} (PID)</nb-option>
@@ -508,7 +508,7 @@
                         <div class="form-row">
                             <label class="form-label">{{ 'FAN.CONTROLLER' | translate }}:</label>
                             <div class="form-control-wrapper">
-                                <nb-select fullWidth formControlName="fan1Mode">
+                                <nb-select fullWidth formControlName="fan1Mode" [placeholder]="'FAN.CONTROLLER' | translate">
                                     <nb-option [value]="3">{{ 'FAN.USE_FAN1_SETTINGS' | translate }}</nb-option>
                                     <nb-option [value]="0">{{ 'FAN.MANUAL' | translate }}</nb-option>
                                     <nb-option [value]="2">{{ 'SETTINGS.AUTO_FAN' | translate }} (PID)</nb-option>
@@ -609,7 +609,7 @@
                 <div class="form-row">
                     <label class="form-label">{{ 'SETTINGS.TIME_FORMAT' | translate }}:</label>
                     <div class="form-control-wrapper">
-                        <nb-select formControlName="timeFormat" placeholder="{{ 'SETTINGS.TIME_FORMAT' | translate }}">
+                        <nb-select formControlName="timeFormat" [placeholder]="'SETTINGS.TIME_FORMAT' | translate">
                             <nb-option value="24h">{{ 'SETTINGS.TIME_FORMAT_24H' | translate }}</nb-option>
                             <nb-option value="12h">{{ 'SETTINGS.TIME_FORMAT_12H' | translate }}</nb-option>
                         </nb-select>
