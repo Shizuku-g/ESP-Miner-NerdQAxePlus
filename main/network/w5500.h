@@ -63,13 +63,12 @@ class W5500 {
     void handleIpEvent(int32_t id, void *data);
 
   private:
-    /* Pins */
-    gpio_num_t m_pinMosi = GPIO_NUM_12;
-    gpio_num_t m_pinMiso = GPIO_NUM_16;
-    gpio_num_t m_pinSclk = GPIO_NUM_2;
-    gpio_num_t m_pinCs = GPIO_NUM_21;
-    gpio_num_t m_pinRst = GPIO_NUM_13;
-    gpio_num_t m_pinInt = GPIO_NUM_11;
+    gpio_num_t m_pinMosi = GPIO_NUM_NC;
+    gpio_num_t m_pinMiso = GPIO_NUM_NC;
+    gpio_num_t m_pinSclk = GPIO_NUM_NC;
+    gpio_num_t m_pinCs = GPIO_NUM_NC;
+    gpio_num_t m_pinRst = GPIO_NUM_NC;
+    gpio_num_t m_pinInt = GPIO_NUM_NC;
 
     /* State */
     bool m_inited = false;

@@ -15,6 +15,28 @@ endif()
 
 message(STATUS "Selected board: $ENV{BOARD}")
 
+if("$ENV{BOARD}" STREQUAL "BV002")
+    add_compile_definitions(
+        W5500_SPI_CS_GPIO=GPIO_NUM_3
+        W5500_SPI_SCLK_GPIO=GPIO_NUM_16
+        W5500_SPI_MOSI_GPIO=GPIO_NUM_21
+        W5500_SPI_MISO_GPIO=GPIO_NUM_12
+        W5500_SPI_RST_GPIO=GPIO_NUM_NC
+        W5500_SPI_INT_GPIO=GPIO_NUM_NC
+        W5500_USE_INT=0
+    )
+else()
+    add_compile_definitions(
+        W5500_SPI_MOSI_GPIO=GPIO_NUM_12
+        W5500_SPI_MISO_GPIO=GPIO_NUM_16
+        W5500_SPI_SCLK_GPIO=GPIO_NUM_2
+        W5500_SPI_CS_GPIO=GPIO_NUM_21
+        W5500_SPI_RST_GPIO=GPIO_NUM_13
+        W5500_SPI_INT_GPIO=GPIO_NUM_11
+        W5500_USE_INT=1
+    )
+endif()
+
 set(ENV{SOURCE_DATE_EPOCH} 0)
 
 

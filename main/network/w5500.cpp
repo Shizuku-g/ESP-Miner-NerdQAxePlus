@@ -24,7 +24,14 @@ static const char *TAG_ETH = "w5500";
 #endif
 
 W5500::W5500()
-{}
+{
+    m_pinMosi = W5500_SPI_MOSI_GPIO;
+    m_pinMiso = W5500_SPI_MISO_GPIO;
+    m_pinSclk = W5500_SPI_SCLK_GPIO;
+    m_pinCs = W5500_SPI_CS_GPIO;
+    m_pinRst = W5500_SPI_RST_GPIO;
+    m_pinInt = W5500_SPI_INT_GPIO;
+}
 
 void W5500::makeEthMacFromEfuse(uint8_t out_mac[6])
 {
@@ -157,7 +164,11 @@ esp_err_t W5500::earlySpiInit()
 
     ESP_LOGW(TAG_ETH, "W5500::init start");
 
-    hwResetGpio(m_pinRst);
+    if (m_pinRst >= 0) {
+        hwResetGpio(m_pinRst);
+    } else {
+        vTaskDelay(pdMS_TO_TICKS(200));
+    }
 
     /* Create netif */
     esp_netif_config_t netif_cfg = ESP_NETIF_DEFAULT_ETH();

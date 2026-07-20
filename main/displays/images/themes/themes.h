@@ -152,6 +152,24 @@ LV_IMG_DECLARE(ui_img_NerdHaxeGamma_settingsscreen_png);
 LV_IMG_DECLARE(ui_img_NerdHaxeGamma_splashscreen2_png);
 LV_IMG_DECLARE(ui_img_NerdHaxeGamma_globalStats_png);
 
+// image files for theme BV001
+LV_IMG_DECLARE(ui_img_BV001_initscreen2_png);
+LV_IMG_DECLARE(ui_img_BV001_miningscreen2_png);
+LV_IMG_DECLARE(ui_img_BV001_portalscreen_png);
+LV_IMG_DECLARE(ui_img_BV001_btcscreen_png);
+LV_IMG_DECLARE(ui_img_BV001_settingsscreen_png);
+LV_IMG_DECLARE(ui_img_BV001_splashscreen2_png);
+LV_IMG_DECLARE(ui_img_BV001_globalStats_png);
+
+// image files for theme BV002
+LV_IMG_DECLARE(ui_img_BV002_initscreen2_png);
+LV_IMG_DECLARE(ui_img_BV002_miningscreen2_png);
+LV_IMG_DECLARE(ui_img_BV002_portalscreen_png);
+LV_IMG_DECLARE(ui_img_BV002_btcscreen_png);
+LV_IMG_DECLARE(ui_img_BV002_settingsscreen_png);
+LV_IMG_DECLARE(ui_img_BV002_splashscreen2_png);
+LV_IMG_DECLARE(ui_img_BV002_globalStats_png);
+
 
 // class  for theme NerdOctaxeGamma
 class ThemeNerdoctaxegamma : public Theme {
@@ -290,6 +308,34 @@ public:
         setSettingsscreen(&ui_img_NerdHaxeGamma_settingsscreen_png);
         setSplashscreen2(&ui_img_NerdHaxeGamma_splashscreen2_png);
         setGlobalstats(&ui_img_NerdHaxeGamma_globalStats_png);
+    }
+};
+
+// class  for theme BV001
+class ThemeBv001 : public Theme {
+public:
+    ThemeBv001() {
+        setInitscreen2(&ui_img_BV001_initscreen2_png);
+        setMiningscreen2(&ui_img_BV001_miningscreen2_png);
+        setPortalscreen(&ui_img_BV001_portalscreen_png);
+        setBtcscreen(&ui_img_BV001_btcscreen_png);
+        setSettingsscreen(&ui_img_BV001_settingsscreen_png);
+        setSplashscreen2(&ui_img_BV001_splashscreen2_png);
+        setGlobalstats(&ui_img_BV001_globalStats_png);
+    }
+};
+
+// class  for theme BV002
+class ThemeBv002 : public Theme {
+public:
+    ThemeBv002() {
+        setInitscreen2(&ui_img_BV002_initscreen2_png);
+        setMiningscreen2(&ui_img_BV002_miningscreen2_png);
+        setPortalscreen(&ui_img_BV002_portalscreen_png);
+        setBtcscreen(&ui_img_BV002_btcscreen_png);
+        setSettingsscreen(&ui_img_BV002_settingsscreen_png);
+        setSplashscreen2(&ui_img_BV002_splashscreen2_png);
+        setGlobalstats(&ui_img_BV002_globalStats_png);
     }
 };
 
