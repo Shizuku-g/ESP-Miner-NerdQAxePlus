@@ -29,11 +29,18 @@ void Bv001::applyBv001AsicProfile()
     m_asicFrequencies = {550, 600, 650, 700, 750, 800};
     m_asicVoltages = {1000, 1050, 1100, 1150, 1200};
     m_defaultAsicFrequency = m_asicFrequency = 600;
-    m_defaultAsicVoltageMillis = m_asicVoltageMillis = 1000;
+    m_defaultAsicVoltageMillis = m_asicVoltageMillis = 1150;
     m_absMaxAsicFrequency = 1000;
     m_absMinAsicVoltageMillis = 900;
-    m_absMaxAsicVoltageMillis = 1250;
+    m_absMaxAsicVoltageMillis = 1400;
     m_initVoltageMillis = 1050;
+
+    m_maxPin = 140.0;
+    m_minPin = 52.0;
+    m_maxVin = 13.0;
+    m_minVin = 11.0;
+    m_minCurrentA = 0.0f;
+    m_maxCurrentA = 12.0f;
 
     m_asicMaxDifficulty = 4096;
     m_asicMinDifficulty = 1024;
