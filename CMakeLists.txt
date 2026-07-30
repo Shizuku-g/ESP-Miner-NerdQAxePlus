@@ -24,6 +24,7 @@ if("$ENV{BOARD}" STREQUAL "BV002")
         W5500_SPI_RST_GPIO=GPIO_NUM_NC
         W5500_SPI_INT_GPIO=GPIO_NUM_NC
         W5500_USE_INT=0
+        TPS546_I2CADDR=0x14
     )
 else()
     add_compile_definitions(

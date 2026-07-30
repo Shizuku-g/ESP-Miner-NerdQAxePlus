@@ -6,7 +6,9 @@
 
 #include "../BuckConverter.h"
 
-#define TPS546_I2CADDR         0x24  //< TPS546 i2c address
+#ifndef TPS546_I2CADDR
+#define TPS546_I2CADDR         0x24
+#endif
 #define TPS546_MANUFACTURER_ID 0xFE  //< Manufacturer ID
 #define TPS546_REVISION        0xFF  //< Chip revision
 

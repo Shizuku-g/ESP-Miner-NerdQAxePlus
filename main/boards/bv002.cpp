@@ -26,15 +26,23 @@ Bv002::Bv002() : NerdQaxePlus2()
 void Bv002::applyBv002AsicProfile()
 {
     m_asicJobIntervalMs = 500;
-    m_version = 503;
-    m_asicFrequencies = {250, 275, 300, 325, 350, 375, 400, 425, 475, 500, 550};
-    m_asicVoltages = {980, 990, 1000, 1010, 1020, 1030, 1040, 1050, 1060, 1070, 1080};
-    m_defaultAsicFrequency = m_asicFrequency = 350;
-    m_defaultAsicVoltageMillis = m_asicVoltageMillis = 1010;
-    m_absMaxAsicFrequency = 700;
+    m_version = 504;
+    m_asicFrequencies = {550, 600, 650, 700, 750, 800};
+    m_asicVoltages = {1000, 1050, 1100, 1150, 1200};
+    m_defaultAsicFrequency = m_asicFrequency = 600;
+    m_defaultAsicVoltageMillis = m_asicVoltageMillis = 1150;
+    m_absMaxAsicFrequency = 1000;
     m_absMinAsicVoltageMillis = 900;
-    m_absMaxAsicVoltageMillis = 1200;
+    m_absMaxAsicVoltageMillis = 1400;
     m_initVoltageMillis = 1050;
+
+
+    m_maxPin = 180.0;
+    m_minPin = 52.0;
+    m_maxVin = 13.0;
+    m_minVin = 11.0;
+    m_minCurrentA = 0.0f;
+    m_maxCurrentA = 16.0f;
 
     m_asicMaxDifficulty = 4096;
     m_asicMinDifficulty = 1024;
