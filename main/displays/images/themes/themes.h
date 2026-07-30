@@ -170,6 +170,15 @@ LV_IMG_DECLARE(ui_img_BV002_settingsscreen_png);
 LV_IMG_DECLARE(ui_img_BV002_splashscreen2_png);
 LV_IMG_DECLARE(ui_img_BV002_globalStats_png);
 
+// image files for theme BV003
+LV_IMG_DECLARE(ui_img_BV003_initscreen2_png);
+LV_IMG_DECLARE(ui_img_BV003_miningscreen2_png);
+LV_IMG_DECLARE(ui_img_BV003_portalscreen_png);
+LV_IMG_DECLARE(ui_img_BV003_btcscreen_png);
+LV_IMG_DECLARE(ui_img_BV003_settingsscreen_png);
+LV_IMG_DECLARE(ui_img_BV003_splashscreen2_png);
+LV_IMG_DECLARE(ui_img_BV003_globalStats_png);
+
 
 // class  for theme NerdOctaxeGamma
 class ThemeNerdoctaxegamma : public Theme {
@@ -336,6 +345,20 @@ public:
         setSettingsscreen(&ui_img_BV002_settingsscreen_png);
         setSplashscreen2(&ui_img_BV002_splashscreen2_png);
         setGlobalstats(&ui_img_BV002_globalStats_png);
+    }
+};
+
+// class  for theme BV003
+class ThemeBv003 : public Theme {
+public:
+    ThemeBv003() {
+        setInitscreen2(&ui_img_BV003_initscreen2_png);
+        setMiningscreen2(&ui_img_BV003_miningscreen2_png);
+        setPortalscreen(&ui_img_BV003_portalscreen_png);
+        setBtcscreen(&ui_img_BV003_btcscreen_png);
+        setSettingsscreen(&ui_img_BV003_settingsscreen_png);
+        setSplashscreen2(&ui_img_BV003_splashscreen2_png);
+        setGlobalstats(&ui_img_BV003_globalStats_png);
     }
 };
 
