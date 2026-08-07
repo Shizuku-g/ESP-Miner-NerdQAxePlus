@@ -69,9 +69,9 @@ TPS546_CONFIG TPS546_create_dual_config(void)
     config.vin_uv_warn_limit = 11.0f;
     config.vin_ov_fault_limit = 14.0f;
     config.scale_loop = 0.125f;
-    config.vout_min = 1.0f;
+    config.vout_min = 2.0f;
     config.vout_max = 3.0f;
-    config.vout_command = 1.2f;
+    config.vout_command = 2.4f;
     config.iout_oc_warn_limit = 90.0f;
     config.iout_oc_fault_limit = 100.0f;
     config.stack_config = TPS546_INIT_STACK_CONFIG_DUAL;
@@ -90,6 +90,23 @@ TPS546_CONFIG TPS546_create_triple_config(void)
     config.iout_oc_warn_limit = 135.0f;
     config.iout_oc_fault_limit = 150.0f;
     config.stack_config = TPS546_INIT_STACK_CONFIG_TRIPLE;
+    return config;
+}
+
+TPS546_CONFIG TPS546_create_quad_config(void)
+{
+    TPS546_CONFIG config = TPS546_create_triple_config();
+    config.vout_min = 3.6f;
+    config.vout_max = 5.6f;
+    config.vout_command = 4.8f;
+    config.iout_oc_warn_limit = 180.0f;
+    config.iout_oc_fault_limit = 200.0f;
+    config.stack_config = TPS546_INIT_STACK_CONFIG_QUAD;
+    config.compensation_config[0] = 0x02;
+    config.compensation_config[1] = 0x64;
+    config.compensation_config[2] = 0x82;
+    config.compensation_config[3] = 0x11;
+    config.compensation_config[4] = 0x06;
     return config;
 }
 
@@ -1052,16 +1069,9 @@ void TPS546_show_voltage_settings(void)
     ESP_LOGI(TAG, "Vout Min set to: %.2f V", f_value);
 }
 
-TPS546::TPS546(uint16_t voltage_domains)
-    : TPS546(voltage_domains, TPS546_create_dual_config())
-{
-}
-
 TPS546::TPS546(uint16_t voltage_domains, const TPS546_CONFIG &config)
 {
     m_config = config;
-    m_config.vout_min = 2.0f;
-    m_config.vout_command = 2.4f;
     m_voltageDomains = voltage_domains;
 }
 

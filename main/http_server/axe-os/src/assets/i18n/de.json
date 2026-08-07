@@ -192,6 +192,7 @@
     "DEVICE_MODEL": "Gerätemodell",
     "FIRMWARE_VERSION": "Firmware-Version",
     "MAC_ADDRESS": "MAC-Adresse",
+    "SERIAL_NUMBER": "Seriennummer",
     "IP_ADDRESS": "IP-Adresse",
     "FREE_HEAP": "Freier Speicher",
     "FREE_HEAP_MEMORY": "Freier Heap-Speicher",

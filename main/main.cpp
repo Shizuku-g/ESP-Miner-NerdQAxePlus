@@ -25,6 +25,7 @@
 #include "boards/q1373.h"
 #include "boards/bv001.h"
 #include "boards/bv002.h"
+#include "boards/bv003.h"
 #include "create_jobs_task.h"
 #include "discord.h"
 #include "global_state.h"
@@ -278,6 +279,9 @@ extern "C" void app_main(void)
 #endif
 #ifdef BV002
     Board *board = new Bv002();
+#endif
+#ifdef BV003
+    Board *board = new Bv003();
 #endif
 
     // initialize everything non-asic-specific like

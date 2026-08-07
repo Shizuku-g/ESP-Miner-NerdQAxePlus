@@ -16,6 +16,7 @@ export interface ISystemV2 {
     deviceModel: string;
     asicModel: string;
     version: string;
+    serial?: string;
     uptimeSeconds: number;
     lastResetReason: string;
     network: ISystemV2Network;

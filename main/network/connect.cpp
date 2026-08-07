@@ -14,6 +14,12 @@
 
 #include "lwip/err.h"
 
+#include "system.h"
+
+extern System SYSTEM_MODULE;
+
+static constexpr size_t WIFI_AP_SSID_BUF_LEN = 33;
+
 /* Implemented in main.cpp (C++ now, so linkage matches) */
 void MINER_set_wifi_status(wifi_status_t status, uint16_t retry_count);
 void MINER_set_ap_status(bool state);
@@ -175,24 +181,46 @@ EventBits_t wifi_wait_connected_ms(TickType_t ticks)
     return xEventGroupWaitBits(s_wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdFALSE, ticks);
 }
 
-static void generate_ssid_impl(char *ssid)
+static void generate_ssid_impl(char *ssid, size_t ssid_len)
 {
+    if (!ssid || ssid_len < 2) {
+        return;
+    }
+
     uint8_t mac[6];
     esp_wifi_get_mac(WIFI_IF_AP, mac);
-    snprintf(ssid, 32, "Nerdaxe_%02X%02X", mac[4], mac[5]);
+
+    // The suffix is ​​fixed as "_AABB" (4-digit MAC), and the prefix uses the board model
+    const char *prefix = "Nerdaxe";
+    Board *board = SYSTEM_MODULE.getBoard();
+    if (board && board->getDeviceModel() && board->getDeviceModel()[0] != '\0') {
+        prefix = board->getDeviceModel();
+    }
+
+    const size_t suffix_len = 5;
+    size_t prefix_max = ssid_len - 1;
+    if (prefix_max > suffix_len) {
+        prefix_max -= suffix_len;
+    }
+
+    char prefix_buf[32];
+    strncpy(prefix_buf, prefix, prefix_max);
+    prefix_buf[prefix_max] = '\0';
+
+    snprintf(ssid, ssid_len, "%s_%02X%02X", prefix_buf, mac[4], mac[5]);
 }
 
 void generate_ssid(char *ssid)
 {
-    generate_ssid_impl(ssid);
+    generate_ssid_impl(ssid, WIFI_AP_SSID_BUF_LEN);
 }
 
 static esp_netif_t *wifi_init_softap(void)
 {
     esp_netif_t *esp_netif_ap = esp_netif_create_default_wifi_ap();
 
-    char ssid_with_mac[13] = {0};
-    generate_ssid_impl(ssid_with_mac);
+    char ssid_with_mac[WIFI_AP_SSID_BUF_LEN] = {0};
+    generate_ssid_impl(ssid_with_mac, sizeof(ssid_with_mac));
 
     wifi_config_t wifi_ap_config;
     memset(&wifi_ap_config, 0, sizeof(wifi_ap_config));

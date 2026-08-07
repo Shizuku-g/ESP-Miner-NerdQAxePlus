@@ -1,13 +1,13 @@
-#include "bv002.h"
+#include "bv003.h"
 
 #include "bm1373.h"
 #include "drivers/rev7/TPS546.h"
 #include "drivers/TMP1075.h"
 #include "esp_log.h"
 
-static const char *TAG = "bv002";
+static const char *TAG = "bv003";
 
-static constexpr int BV002_TMP1075_COUNT = 1;
+static constexpr int BV003_TMP1075_COUNT = 2;
 
 static constexpr float CHIP_TEMP_OFFSET = 10.0f;
 
@@ -20,31 +20,35 @@ static float readChipTemp(int device_index)
     return temp + CHIP_TEMP_OFFSET;
 }
 
-Bv002::Bv002() : NerdQaxePlus2()
+Bv003::Bv003() : NerdQaxePlus2()
 {
-    m_deviceModel = "BV002";
+    m_deviceModel = "BV003";
     m_miningAgent = m_deviceModel;
     m_asicModel = "BM1373";
-    m_asicCount = 2;
-    m_rev7VoltageDomains = 2;
-    m_numPhases = 3;
-    m_imax = 135;
-    m_ifault = 150.0f;
+    m_asicCount = 4;
+    m_rev7VoltageDomains = 4;
+    m_numPhases = 4;
+    m_imax = 180;
+    m_ifault = 200.0f;
 
     m_asics = new BM1373();
     m_vrFrequency = m_defaultVrFrequency = m_asics->getDefaultVrFrequency();
 
-    applyBv002AsicProfile();
+    m_fanLabels[0] = "M2 (Use a Y-splitter cable for multiple ASIC fans.)";
+    m_fanLabels[1] = "M1";
+    m_swarmColorName = "#11d51e";
 
-#ifdef BV002
-    m_theme = new ThemeBv002();
+    applyBv003AsicProfile();
+
+#ifdef BV003
+    m_theme = new ThemeBv003();
 #endif
 }
 
-void Bv002::applyBv002AsicProfile()
+void Bv003::applyBv003AsicProfile()
 {
     m_asicJobIntervalMs = 500;
-    m_version = 504;
+    m_version = 505;
     m_asicFrequencies = {550, 600, 650, 700, 750, 800};
     m_asicVoltages = {1000, 1050, 1100, 1150, 1200};
     m_defaultAsicFrequency = m_asicFrequency = 600;
@@ -54,28 +58,28 @@ void Bv002::applyBv002AsicProfile()
     m_absMaxAsicVoltageMillis = 1400;
     m_initVoltageMillis = 1050;
 
-    m_maxPin = 180.0;
-    m_minPin = 52.0;
+    m_maxPin = 300.0;
+    m_minPin = 80.0;
     m_maxVin = 13.0;
     m_minVin = 11.0;
     m_minCurrentA = 0.0f;
-    m_maxCurrentA = 16.0f;
+    m_maxCurrentA = 32.0f;
 
     m_asicMaxDifficulty = 4096;
     m_asicMinDifficulty = 1024;
     m_asicMinDifficultyDualPool = 512;
 }
 
-Rev7TPS546::TPS546_CONFIG Bv002::createRev7Tps546Config()
+Rev7TPS546::TPS546_CONFIG Bv003::createRev7Tps546Config()
 {
-    return Rev7TPS546::TPS546_create_triple_config();
+    return Rev7TPS546::TPS546_create_quad_config();
 }
 
-void Bv002::detectChipTempSensors()
+void Bv003::detectChipTempSensors()
 {
     int found = 0;
-    for (int i = 0; i < BV002_TMP1075_COUNT; i++) {
-        const float temp = TMP1075_read_temperature(i);
+    for (int i = 0; i < BV003_TMP1075_COUNT; i++) {
+        float temp = TMP1075_read_temperature(i);
         if (temp == 0.0f) {
             break;
         }
@@ -84,29 +88,27 @@ void Bv002::detectChipTempSensors()
         found++;
     }
     m_numTempSensors = found;
-    if (found == 0) {
-        ESP_LOGW(TAG, "chip TMP1075 not found (addr 0x%02x)", TMP1075_I2CADDR_DEFAULT);
-    }
+    ESP_LOGI(TAG, "found %d chip TMP1075 sensors", m_numTempSensors);
 }
 
-bool Bv002::initBoard()
+bool Bv003::initBoard()
 {
     if (!NerdQaxePlus2::initBoard()) {
         return false;
     }
 
-    applyBv002AsicProfile();
+    applyBv003AsicProfile();
     loadSettings();
 
     detectChipTempSensors();
 
-    ESP_LOGI(TAG, "BV002 init done (version=%d, ethernet=W5500, temp_sensors=%d)",
-             m_version, m_numTempSensors);
+    ESP_LOGI(TAG, "BV003 init done (version=%d, ethernet=W5500, vr_domains=%d)",
+             m_version, m_rev7VoltageDomains);
 
     return true;
 }
 
-float Bv002::getTemperature(int index)
+float Bv003::getTemperature(int index)
 {
     if (index < 0 || index >= m_numTempSensors) {
         return 0.0f;
@@ -114,7 +116,7 @@ float Bv002::getTemperature(int index)
     return readChipTemp(index);
 }
 
-void Bv002::requestChipTemps()
+void Bv003::requestChipTemps()
 {
     if (m_shutdown) {
         for (int i = 0; i < m_asicCount; i++) {
@@ -123,10 +125,15 @@ void Bv002::requestChipTemps()
         return;
     }
 
-    const float temp = readChipTemp(0);
-    if (temp) {
-        for (int i = 0; i < m_asicCount; i++) {
-            setChipTemp(i, temp);
-        }
+    const float temp0 = readChipTemp(0);
+    const float temp1 = readChipTemp(1);
+
+    if (temp0) {
+        setChipTemp(0, temp0);
+        setChipTemp(1, temp0);
+    }
+    if (temp1) {
+        setChipTemp(2, temp1);
+        setChipTemp(3, temp1);
     }
 }

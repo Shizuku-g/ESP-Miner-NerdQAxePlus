@@ -26,6 +26,17 @@ if("$ENV{BOARD}" STREQUAL "BV002")
         W5500_USE_INT=0
         TPS546_I2CADDR=0x14
     )
+elseif("$ENV{BOARD}" STREQUAL "BV003")
+    add_compile_definitions(
+        W5500_SPI_CS_GPIO=GPIO_NUM_16
+        W5500_SPI_SCLK_GPIO=GPIO_NUM_21
+        W5500_SPI_MOSI_GPIO=GPIO_NUM_13
+        W5500_SPI_MISO_GPIO=GPIO_NUM_12
+        W5500_SPI_RST_GPIO=GPIO_NUM_NC
+        W5500_SPI_INT_GPIO=GPIO_NUM_NC
+        W5500_USE_INT=0
+        TPS546_I2CADDR=0x18
+    )
 else()
     add_compile_definitions(
         W5500_SPI_MOSI_GPIO=GPIO_NUM_12

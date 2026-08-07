@@ -41,6 +41,12 @@ esp_err_t GET_V2_system(httpd_req_t *req)
     doc["asicModel"]   = board->getAsicModel();
     doc["version"]     = esp_app_get_description()->version;
 
+    char *serial = Config::getSerial();
+    doc["serial"] = serial ? serial : "";
+    if (serial) {
+        free(serial);
+    }
+
     // Uptime & reset
     doc["uptimeSeconds"]    = (esp_timer_get_time() - SYSTEM_MODULE.getStartTime()) / 1000000;
     doc["lastResetReason"]  = SYSTEM_MODULE.getLastResetReason();

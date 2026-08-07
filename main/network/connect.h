@@ -38,6 +38,7 @@ esp_netif_t *wifi_init(const char *wifi_ssid, const char *wifi_pass, const char 
 EventBits_t wifi_connect(void);
 EventBits_t wifi_wait_connected_ms(TickType_t ticks);
 
+/* ssid buffer at least 33 bytes (WiFi SSID longest 32 + '\0') */
 void generate_ssid(char *ssid);
 
 bool connect_get_ip_addr(char *buf, size_t buf_len);

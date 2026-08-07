@@ -9,13 +9,13 @@
 class NerdQaxePlus2 : public NerdQaxePlus {
   private:
     bool m_hasRev7TPS546 = false;
-    uint16_t m_rev7VoltageDomains = 2;
 
     void applyRev7Profile();
     void selectRev7BuckConverter();
     bool probeRev7Buck();
 
   protected:
+    uint16_t m_rev7VoltageDomains = 2;
     virtual Rev7TPS546::TPS546_CONFIG createRev7Tps546Config();
 
   public:

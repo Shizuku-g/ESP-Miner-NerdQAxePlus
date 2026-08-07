@@ -50,6 +50,10 @@
           <td>{{ info.network.macAddr }}</td>
         </tr>
         <tr>
+          <td><b>{{ 'SYSTEM.SERIAL_NUMBER' | translate }}:</b></td>
+          <td>{{ info.serial || '—' }}</td>
+        </tr>
+        <tr>
           <td><b>{{ 'SYSTEM.FREE_HEAP_MEMORY' | translate }}:</b></td>
           <td>SRAM: {{ info.memory.freeHeapInt }}, PSRAM: {{ info.memory.freeHeap }}</td>
         </tr>

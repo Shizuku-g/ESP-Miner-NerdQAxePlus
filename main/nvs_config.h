@@ -79,6 +79,9 @@
 
 #define NVS_CONFIG_VR_FREQUENCY "vr_frequency"
 
+// 设备序列号（产线写入，写入后不可覆盖）
+#define NVS_CONFIG_SERIAL "serial"
+
 // device global stats
 #define NVS_TOTAL_FOUND_BLOCKS "totalblocks"
 #define NVS_CONFIG_BEST_DIFF "bestdiff"
@@ -159,6 +162,7 @@ namespace Config {
     inline char* getInfluxOrg() { return cfgGetStrAlloc(NVS_CONFIG_INFLUX_ORG, CONFIG_INFLUX_ORG); }
     inline char* getInfluxPrefix() { return cfgGetStrAlloc(NVS_CONFIG_INFLUX_PREFIX, CONFIG_INFLUX_PREFIX); }
     inline char* getSwarmConfig() { return cfgGetStrAlloc(NVS_CONFIG_SWARM, ""); }
+    inline char* getSerial() { return cfgGetStrAlloc(NVS_CONFIG_SERIAL, ""); }
     inline char* getDiscordWebhook() { return cfgGetStrAlloc(NVS_CONFIG_ALERT_DISCORD_URL, CONFIG_ALERT_DISCORD_URL); }
     inline char* getMempoolUrl() { return cfgGetStrAlloc(NVS_CONFIG_MEMPOOL_URL, CONFIG_MEMPOOL_URL); }
     inline void setMempoolUrl(const char* value) { cfgSetStr(NVS_CONFIG_MEMPOOL_URL, value); }
@@ -181,6 +185,13 @@ namespace Config {
     inline void setInfluxOrg(const char* value) { cfgSetStr(NVS_CONFIG_INFLUX_ORG, value); }
     inline void setInfluxPrefix(const char* value) { cfgSetStr(NVS_CONFIG_INFLUX_PREFIX, value); }
     inline void setSwarmConfig(const char* value) { cfgSetStr(NVS_CONFIG_SWARM, value); }
+    inline void setSerial(const char* value) { cfgSetStr(NVS_CONFIG_SERIAL, value); }
+    inline bool hasSerial() {
+        char* s = cfgGetStrAlloc(NVS_CONFIG_SERIAL, "");
+        const bool ok = s && strlen(s) > 0;
+        if (s) free(s);
+        return ok;
+    }
     inline void setDiscordWebhook(const char* value) { cfgSetStr(NVS_CONFIG_ALERT_DISCORD_URL, value); }
 
     // ---- uint16_t Getters ----

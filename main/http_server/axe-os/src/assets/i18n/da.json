@@ -192,6 +192,7 @@
     "DEVICE_MODEL": "Enhedsmodel",
     "FIRMWARE_VERSION": "Firmwareversion",
     "MAC_ADDRESS": "MAC-adresse",
+    "SERIAL_NUMBER": "Seriennummer",
     "IP_ADDRESS": "IP-adresse",
     "FREE_HEAP": "Ledig heap",
     "FREE_HEAP_MEMORY": "Ledig heap-hukommelse",

@@ -116,6 +116,7 @@ typedef struct {
 TPS546_CONFIG TPS546_create_default_config(void);
 TPS546_CONFIG TPS546_create_dual_config(void);
 TPS546_CONFIG TPS546_create_triple_config(void);
+TPS546_CONFIG TPS546_create_quad_config(void);
 bool TPS546_probe(void);
 int TPS546_init(void);
 int TPS546_init(const TPS546_CONFIG &config);
@@ -140,7 +141,6 @@ void TPS546_print_status(void);
 
 class TPS546 : public BuckConverter {
   public:
-    explicit TPS546(uint16_t voltage_domains);
     TPS546(uint16_t voltage_domains, const TPS546_CONFIG &config);
 
     bool init(int num_phases, int imax, float ifault) override;

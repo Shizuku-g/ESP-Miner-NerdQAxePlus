@@ -192,6 +192,7 @@
     "DEVICE_MODEL": "设备型号",
     "FIRMWARE_VERSION": "固件版本",
     "MAC_ADDRESS": "MAC 地址",
+    "SERIAL_NUMBER": "序列号",
     "IP_ADDRESS": "IP 地址",
     "FREE_HEAP": "可用堆内存",
     "FREE_HEAP_MEMORY": "可用堆内存",
