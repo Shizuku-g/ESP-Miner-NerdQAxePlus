@@ -116,7 +116,9 @@ esp_err_t POST_V2_factory_serial(httpd_req_t *req)
     }
 
     if (Config::hasSerial()) {
-        httpd_resp_send_err(req, HTTPD_409_CONFLICT, "serial already set");
+        httpd_resp_set_status(req, "409 Conflict");
+        httpd_resp_set_type(req, "text/plain");
+        httpd_resp_send(req, "serial already set", HTTPD_RESP_USE_STRLEN);
         return ESP_FAIL;
     }
 
