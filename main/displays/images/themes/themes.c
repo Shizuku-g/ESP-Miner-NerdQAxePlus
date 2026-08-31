@@ -90,6 +90,15 @@
 #include "./BV001/ui_img_splashscreen2_png.c"
 #include "./BV001/ui_img_globalStats_png.c"
 
+#ifdef LARGE_SCREEN
+#include "./BV002/large/ui_img_initscreen2_png.c"
+#include "./BV002/large/ui_img_miningscreen2_png.c"
+#include "./BV002/large/ui_img_portalscreen_png.c"
+#include "./BV002/large/ui_img_btcscreen_png.c"
+#include "./BV002/large/ui_img_settingsscreen_png.c"
+#include "./BV002/large/ui_img_splashscreen2_png.c"
+#include "./BV002/large/ui_img_globalStats_png.c"
+#else
 #include "./BV002/ui_img_initscreen2_png.c"
 #include "./BV002/ui_img_miningscreen2_png.c"
 #include "./BV002/ui_img_portalscreen_png.c"
@@ -97,6 +106,7 @@
 #include "./BV002/ui_img_settingsscreen_png.c"
 #include "./BV002/ui_img_splashscreen2_png.c"
 #include "./BV002/ui_img_globalStats_png.c"
+#endif
 
 #include "./BV003/ui_img_initscreen2_png.c"
 #include "./BV003/ui_img_miningscreen2_png.c"

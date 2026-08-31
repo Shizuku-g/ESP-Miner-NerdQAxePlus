@@ -170,6 +170,17 @@ LV_IMG_DECLARE(ui_img_BV002_settingsscreen_png);
 LV_IMG_DECLARE(ui_img_BV002_splashscreen2_png);
 LV_IMG_DECLARE(ui_img_BV002_globalStats_png);
 
+#ifdef LARGE_SCREEN
+// BV002 大屏主题资源（480x320）
+LV_IMG_DECLARE(ui_img_BV002_LARGE_initscreen2_png);
+LV_IMG_DECLARE(ui_img_BV002_LARGE_miningscreen2_png);
+LV_IMG_DECLARE(ui_img_BV002_LARGE_portalscreen_png);
+LV_IMG_DECLARE(ui_img_BV002_LARGE_btcscreen_png);
+LV_IMG_DECLARE(ui_img_BV002_LARGE_settingsscreen_png);
+LV_IMG_DECLARE(ui_img_BV002_LARGE_splashscreen2_png);
+LV_IMG_DECLARE(ui_img_BV002_LARGE_globalStats_png);
+#endif
+
 // image files for theme BV003
 LV_IMG_DECLARE(ui_img_BV003_initscreen2_png);
 LV_IMG_DECLARE(ui_img_BV003_miningscreen2_png);
@@ -338,6 +349,15 @@ public:
 class ThemeBv002 : public Theme {
 public:
     ThemeBv002() {
+#ifdef LARGE_SCREEN
+        setInitscreen2(&ui_img_BV002_LARGE_initscreen2_png);
+        setMiningscreen2(&ui_img_BV002_LARGE_miningscreen2_png);
+        setPortalscreen(&ui_img_BV002_LARGE_portalscreen_png);
+        setBtcscreen(&ui_img_BV002_LARGE_btcscreen_png);
+        setSettingsscreen(&ui_img_BV002_LARGE_settingsscreen_png);
+        setSplashscreen2(&ui_img_BV002_LARGE_splashscreen2_png);
+        setGlobalstats(&ui_img_BV002_LARGE_globalStats_png);
+#else
         setInitscreen2(&ui_img_BV002_initscreen2_png);
         setMiningscreen2(&ui_img_BV002_miningscreen2_png);
         setPortalscreen(&ui_img_BV002_portalscreen_png);
@@ -345,6 +365,7 @@ public:
         setSettingsscreen(&ui_img_BV002_settingsscreen_png);
         setSplashscreen2(&ui_img_BV002_splashscreen2_png);
         setGlobalstats(&ui_img_BV002_globalStats_png);
+#endif
     }
 };
 
