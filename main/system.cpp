@@ -30,6 +30,11 @@
 #include "tasks/can_sender.h"
 #include "tasks/can_master_task.h"
 
+#if defined(BV002_CHIP_PROBE) || defined(BV003_CHIP_PROBE)
+#include "boards/bv002.h"
+#include "boards/bv003.h"
+#endif
+
 static const char* TAG = "SystemModule";
 
 System::System() {
@@ -229,6 +234,30 @@ void System::task() {
     // wait until splash1 and splash2 timed out
     m_display->waitForSplashs();
 
+#if defined(BV002_CHIP_PROBE) || defined(BV003_CHIP_PROBE)
+    char text[512];
+
+#ifdef BV002_CHIP_PROBE
+    Bv002 *probeBoard = static_cast<Bv002 *>(m_board);
+#else
+    Bv003 *probeBoard = static_cast<Bv003 *>(m_board);
+#endif
+
+    probeBoard->formatProbeScreenText(text, sizeof(text));
+    m_display->logMessage(text);
+
+    while (1) {
+        vTaskDelay(pdMS_TO_TICKS(2000));
+        if (POWER_MANAGEMENT_MODULE.isShutdown()) {
+            ESP_LOGW(TAG, "suspended");
+            vTaskSuspend(NULL);
+        }
+        probeBoard->updateProbeEthStatus();
+        probeBoard->formatProbeScreenText(text, sizeof(text));
+        m_display->logMessage(text);
+    }
+#else
+
     wifi_mode_t wifiMode;
     esp_err_t result;
 
@@ -311,6 +340,7 @@ void System::task() {
 
         pushHistory();
     }
+#endif
 }
 
 void System::notifyMiningStarted() {}

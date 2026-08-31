@@ -142,6 +142,7 @@ public:
     virtual uint32_t getDefaultVrFrequency() = 0;
 
     virtual uint8_t init(uint64_t frequency, uint16_t asic_count, uint32_t difficulty, uint32_t vrFrequency) = 0;
+    virtual int probeChipCount();
     virtual int setMaxBaud(void);
 };
 

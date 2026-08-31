@@ -15,7 +15,10 @@ endif()
 
 message(STATUS "Selected board: $ENV{BOARD}")
 
-if("$ENV{BOARD}" STREQUAL "BV002")
+if("$ENV{BOARD}" STREQUAL "BV002" OR "$ENV{BOARD}" STREQUAL "BV002_CHIP_PROBE")
+    if("$ENV{BOARD}" STREQUAL "BV002_CHIP_PROBE")
+        add_compile_definitions(BV002_CHIP_PROBE BV002)
+    endif()
     add_compile_definitions(
         W5500_SPI_CS_GPIO=GPIO_NUM_3
         W5500_SPI_SCLK_GPIO=GPIO_NUM_16
@@ -26,7 +29,10 @@ if("$ENV{BOARD}" STREQUAL "BV002")
         W5500_USE_INT=0
         TPS546_I2CADDR=0x14
     )
-elseif("$ENV{BOARD}" STREQUAL "BV003")
+elseif("$ENV{BOARD}" STREQUAL "BV003" OR "$ENV{BOARD}" STREQUAL "BV003_CHIP_PROBE")
+    if("$ENV{BOARD}" STREQUAL "BV003_CHIP_PROBE")
+        add_compile_definitions(BV003_CHIP_PROBE BV003)
+    endif()
     add_compile_definitions(
         W5500_SPI_CS_GPIO=GPIO_NUM_16
         W5500_SPI_SCLK_GPIO=GPIO_NUM_21
@@ -35,7 +41,8 @@ elseif("$ENV{BOARD}" STREQUAL "BV003")
         W5500_SPI_RST_GPIO=GPIO_NUM_NC
         W5500_SPI_INT_GPIO=GPIO_NUM_NC
         W5500_USE_INT=0
-        TPS546_I2CADDR=0x18
+        TPS546_I2CADDR=0x24
+        TPS546_INIT_TON_RISE=5
     )
 else()
     add_compile_definitions(

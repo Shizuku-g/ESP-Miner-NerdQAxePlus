@@ -327,6 +327,7 @@ extern "C" void app_main(void)
 
         can_init(board->getCanTxPin(), board->getCanRxPin());
 
+#if !defined(BV002_CHIP_PROBE) && !defined(BV003_CHIP_PROBE)
         POWER_MANAGEMENT_MODULE.lock();
         if (!board->initAsics()) {
             ESP_LOGE(TAG, "error initializing board %s", board->getDeviceModel());
@@ -340,6 +341,7 @@ extern "C" void app_main(void)
         if (board->hasHashrateCounter()) {
             HASHRATE_MONITOR.start(board, board->getAsics());
         }
+#endif
 
     } else {
         // ----------------------------------------------------------------
@@ -392,6 +394,7 @@ extern "C" void app_main(void)
             }
 
             // and continue with initialization
+#if !defined(BV002_CHIP_PROBE) && !defined(BV003_CHIP_PROBE)
             POWER_MANAGEMENT_MODULE.lock();
             if (!board->initAsics()) {
                 ESP_LOGE(TAG, "error initializing board %s", board->getDeviceModel());
@@ -414,6 +417,7 @@ extern "C" void app_main(void)
             if (board->hasHashrateCounter()) {
                 HASHRATE_MONITOR.start(board, board->getAsics());
             }
+#endif
         }
     }
 

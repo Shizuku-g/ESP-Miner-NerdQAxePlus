@@ -258,18 +258,55 @@ esp_err_t W5500::earlySpiInit()
     return ESP_OK;
 }
 
-esp_err_t W5500::init()
+bool W5500::probeHardware()
 {
-    ESP_ERROR_CHECK(esp_event_handler_register(ETH_EVENT, ESP_EVENT_ANY_ID, &W5500::ethEventHandlerTrampoline, this));
-    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_ETH_GOT_IP, &W5500::ipEventHandlerTrampoline, this));
+    if (m_hwProbed) {
+        return m_hwPresent;
+    }
 
-    esp_err_t err = esp_eth_start(m_ethHandle);
+    m_hwProbed = true;
+    m_hwPresent = false;
+
+    if (!m_ethHandle) {
+        ESP_LOGW(TAG_ETH, "W5500 probe: driver not installed");
+        return false;
+    }
+
+    if (!m_inited) {
+        esp_err_t err = esp_event_handler_register(ETH_EVENT, ESP_EVENT_ANY_ID, &W5500::ethEventHandlerTrampoline, this);
+        if (err != ESP_OK && err != ESP_ERR_INVALID_STATE) {
+            ESP_LOGE(TAG_ETH, "ETH event handler register failed: %s", esp_err_to_name(err));
+            return false;
+        }
+        err = esp_event_handler_register(IP_EVENT, IP_EVENT_ETH_GOT_IP, &W5500::ipEventHandlerTrampoline, this);
+        if (err != ESP_OK && err != ESP_ERR_INVALID_STATE) {
+            ESP_LOGE(TAG_ETH, "IP event handler register failed: %s", esp_err_to_name(err));
+            return false;
+        }
+    }
+
+    const esp_err_t err = esp_eth_start(m_ethHandle);
     if (err != ESP_OK) {
-        ESP_LOGE(TAG_ETH, "esp_eth_start failed: %s", esp_err_to_name(err));
-        return err;
+        ESP_LOGW(TAG_ETH, "W5500 probe failed: %s", esp_err_to_name(err));
+        return false;
     }
 
     m_inited = true;
-    ESP_LOGW(TAG_ETH, "W5500 init done");
-    return ESP_OK;
+    m_hwPresent = true;
+    ESP_LOGI(TAG_ETH, "W5500 hardware detected");
+    return true;
+}
+
+esp_err_t W5500::init()
+{
+    if (m_inited) {
+        return ESP_OK;
+    }
+
+    if (probeHardware()) {
+        ESP_LOGW(TAG_ETH, "W5500 init done");
+        return ESP_OK;
+    }
+
+    return ESP_FAIL;
 }

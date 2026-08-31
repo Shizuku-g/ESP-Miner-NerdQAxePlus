@@ -1,9 +1,15 @@
 #include "bv002.h"
 
+#include <stdio.h>
+
 #include "bm1373.h"
 #include "drivers/rev7/TPS546.h"
 #include "drivers/TMP1075.h"
 #include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "global_state.h"
+#include "serial.h"
 
 static const char *TAG = "bv002";
 
@@ -71,6 +77,93 @@ Rev7TPS546::TPS546_CONFIG Bv002::createRev7Tps546Config()
     return Rev7TPS546::TPS546_create_triple_config();
 }
 
+#ifdef BV002_CHIP_PROBE
+
+void Bv002::shutdownAsicPower()
+{
+    setAsicReset(false);
+    LDO_disable();
+    VREG_disable();
+    setVoltage(0.0f);
+}
+
+void Bv002::probeChipsZeroCore()
+{
+    if (!m_hasRev7TPS546) {
+        ESP_LOGW(TAG, "chip probe: TPS546 not detected");
+        return;
+    }
+
+    shutdownAsicPower();
+    vTaskDelay(pdMS_TO_TICKS(250));
+
+    LDO_enable();
+    vTaskDelay(pdMS_TO_TICKS(100));
+
+    setAsicReset(true);
+    vTaskDelay(pdMS_TO_TICKS(500));
+
+    SERIAL_clear_buffer();
+    const int detected = m_asics ? m_asics->probeChipCount() : 0;
+    m_chipsDetected = detected;
+
+    ESP_LOGI(TAG, "chip probe: detected %d / %d (core 0V)", detected, m_asicCount);
+
+    shutdownAsicPower();
+}
+
+bool Bv002::initAsics()
+{
+    ESP_LOGI(TAG, "chip probe firmware, skipping mining init");
+    shutdownAsicPower();
+    return true;
+}
+
+void Bv002::finalizeProbeReport()
+{
+    m_probeReport.tmp1075Ok = m_numTempSensors > 0;
+    m_probeReport.tmp1075C = m_probeTmpRawC;
+    m_probeReport.w5500Ok = NETWORK.probeEthHardware();
+    m_probeReport.tps546Ok = m_hasRev7TPS546;
+    m_probeReport.chipsDetected = m_chipsDetected;
+    m_probeReport.chipsExpected = m_asicCount;
+    updateProbeEthStatus();
+}
+
+void Bv002::updateProbeEthStatus()
+{
+    m_probeReport.w5500Ok = NETWORK.isEthHardwarePresent();
+    m_probeReport.ethHasIp = NETWORK.hasEthIp();
+}
+
+void Bv002::formatProbeScreenText(char *buf, size_t len) const
+{
+    if (!buf || len == 0) {
+        return;
+    }
+
+    const bool asicOk = m_probeReport.chipsDetected == m_probeReport.chipsExpected
+                        && m_probeReport.chipsExpected > 0;
+
+    snprintf(buf, len,
+             "BV002 CHIP PROBE\n\n"
+             "TMP1075:  %s (%.1f C)\n"
+             "W5500:    %s\n"
+             "ETH IP:   %s\n"
+             "TPS546:   %s\n"
+             "ASIC:     %s (%d/%d)",
+             m_probeReport.tmp1075Ok ? "OK" : "FAIL",
+             m_probeReport.tmp1075C,
+             m_probeReport.w5500Ok ? "OK" : "FAIL",
+             m_probeReport.ethHasIp ? "OK" : "WAIT",
+             m_probeReport.tps546Ok ? "OK" : "FAIL",
+             asicOk ? "OK" : "FAIL",
+             m_probeReport.chipsDetected,
+             m_probeReport.chipsExpected);
+}
+
+#endif
+
 void Bv002::detectChipTempSensors()
 {
     int found = 0;
@@ -81,6 +174,9 @@ void Bv002::detectChipTempSensors()
         }
         ESP_LOGI(TAG, "found chip TMP1075 %d (%.2f C, addr 0x%02x)",
                  i, temp, TMP1075_I2CADDR_DEFAULT + i);
+#ifdef BV002_CHIP_PROBE
+        m_probeTmpRawC = temp;
+#endif
         found++;
     }
     m_numTempSensors = found;
@@ -99,6 +195,11 @@ bool Bv002::initBoard()
     loadSettings();
 
     detectChipTempSensors();
+
+#ifdef BV002_CHIP_PROBE
+    probeChipsZeroCore();
+    finalizeProbeReport();
+#endif
 
     ESP_LOGI(TAG, "BV002 init done (version=%d, ethernet=W5500, temp_sensors=%d)",
              m_version, m_numTempSensors);

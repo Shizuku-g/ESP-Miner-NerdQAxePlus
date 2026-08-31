@@ -68,6 +68,16 @@ class NetworkManager {
         m_eth.earlySpiInit();
     }
 
+    bool probeEthHardware()
+    {
+        return m_eth.probeHardware();
+    }
+
+    bool isEthHardwarePresent() const
+    {
+        return m_eth.isHardwarePresent();
+    }
+
     void shutdownApOnce();
 
   private:

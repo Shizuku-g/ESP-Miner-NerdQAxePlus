@@ -90,23 +90,32 @@ TPS546_CONFIG TPS546_create_triple_config(void)
     config.iout_oc_warn_limit = 135.0f;
     config.iout_oc_fault_limit = 150.0f;
     config.stack_config = TPS546_INIT_STACK_CONFIG_TRIPLE;
+    config.compensation_config[0] = 0x12; // 0x12
+    config.compensation_config[1] = 0x28; // 0x30
+    config.compensation_config[2] = 0x42; // 0x42
+    config.compensation_config[3] = 0x15; // 0x19
+    config.compensation_config[4] = 0x04; // 0x04
     return config;
 }
 
 TPS546_CONFIG TPS546_create_quad_config(void)
 {
     TPS546_CONFIG config = TPS546_create_triple_config();
+    config.vin_on = 10.0f;
+    config.vin_off = 9.5f;
+    config.vin_uv_warn_limit = 10.0f;
+    config.vin_ov_fault_limit = 14.0f;
     config.vout_min = 3.6f;
-    config.vout_max = 5.6f;
+    config.vout_max = 5.5f;
     config.vout_command = 4.8f;
     config.iout_oc_warn_limit = 180.0f;
     config.iout_oc_fault_limit = 200.0f;
     config.stack_config = TPS546_INIT_STACK_CONFIG_QUAD;
-    config.compensation_config[0] = 0x02;
-    config.compensation_config[1] = 0x64;
-    config.compensation_config[2] = 0x82;
-    config.compensation_config[3] = 0x11;
-    config.compensation_config[4] = 0x06;
+    config.compensation_config[0] = 0x12; // 0x12
+    config.compensation_config[1] = 0x34; // 0x34
+    config.compensation_config[2] = 0x42; // 0x42
+    config.compensation_config[3] = 0x25; // 0x25
+    config.compensation_config[4] = 0x04; // 0x04
     return config;
 }
 
@@ -1001,6 +1010,15 @@ bool TPS546_set_vout(float volts)
     if (smb_write_byte(PMBUS_OPERATION, OPERATION_ON) != ESP_OK) {
         ESP_LOGE(TAG, "Could not turn on Vout");
         return false;
+    }
+
+    uint8_t operation = 0;
+    if (smb_read_byte(PMBUS_OPERATION, &operation) != ESP_OK) {
+        ESP_LOGE(TAG, "Could not read OPERATION register");
+        return false;
+    }
+    else {
+        ESP_LOGI(TAG, "OPERATION register after ON: 0x%02X", operation);
     }
 
     return true;

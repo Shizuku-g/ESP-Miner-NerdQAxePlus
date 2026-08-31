@@ -47,6 +47,13 @@ class W5500 {
 
     esp_err_t earlySpiInit();
 
+    // Read VERSIONR(0x04) to determine if W5500 is in place
+    bool probeHardware();
+    bool isHardwarePresent() const
+    {
+        return m_hwPresent;
+    }
+
   private:
     static void makeEthMacFromEfuse(uint8_t out_mac[6]);
     static void setEthMac(esp_eth_handle_t eth_handle, const char *tag);
@@ -72,6 +79,8 @@ class W5500 {
 
     /* State */
     bool m_inited = false;
+    bool m_hwProbed = false;
+    bool m_hwPresent = false;
     bool m_linkUp = false;
     bool m_hasIp = false;
     char m_ipAddr[20] = "0.0.0.0";

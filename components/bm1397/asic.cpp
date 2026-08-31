@@ -279,6 +279,11 @@ int Asic::count_asics() {
     return chip_counter;
 }
 
+int Asic::probeChipCount()
+{
+    return count_asics();
+}
+
 void Asic::setJobDifficultyMask(int difficulty)
 {
     // Default mask of 256 diff
