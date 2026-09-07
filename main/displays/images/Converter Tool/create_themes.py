@@ -1,8 +1,26 @@
+import argparse
 import os
 import subprocess
 import sys
 
 from jinja2 import Environment, FileSystemLoader
+
+# Theme directory name -> BOARD macro required to compile the theme (matches $ENV{BOARD} in CMakeLists)
+THEME_BOARDS = {
+    "NerdOctaxeGamma": ["NERDOCTAXEGAMMA"],
+    "NerdQaxePlus": ["NERDQAXEPLUS"],
+    "NerdEko": ["NERDEKO"],
+    "NerdQaxePlus2": ["NERDQAXEPLUS2"],
+    "NerdAxe": ["NERDAXE"],
+    "NerdAxeGamma": ["NERDAXEGAMMA"],
+    "NerdQX": ["NERDQX"],
+    "NerdOctaxePlus": ["NERDOCTAXEPLUS"],
+    "Generic": ["Q1370", "Q1373"],
+    "NerdHaxeGamma": ["NERDHAXEGAMMA"],
+    "BV001": ["BV001"],
+    "BV002": ["BV002"],
+    "BV003": ["BV003"],
+}
 
 # Function to process each theme directory and convert PNG files to C files
 def process_theme(theme, rpath):
@@ -34,31 +52,60 @@ def generate_file(template_file, output_file, context):
     with open(output_file, 'w') as f:
         f.write(rendered_output)
 
-# Main function to process themes and generate necessary files
-def main():
-    rpath = os.path.dirname(os.path.realpath(__file__))
-    os.chdir(os.path.join(rpath, "../themes"))
+def generate_theme_headers(rpath, theme_dirs):
+    screens = [
+        "initscreen2",
+        "miningscreen2",
+        "portalscreen",
+        "btcscreen",
+        "settingsscreen",
+        "splashscreen2",
+        "globalStats",
+    ]
+    missing = [t for t in theme_dirs if t not in THEME_BOARDS]
+    if missing:
+        raise ValueError(f"Theme directory missing BOARD mapping: {missing}")
 
-    # Process each theme directory and convert its images
-    theme_dirs = [d for d in os.listdir(".") if os.path.isdir(d) and d != "."]
-    for theme in theme_dirs:
-        theme_name = os.path.basename(theme)
-        if theme_name:
-            print(f"Processing theme: {theme_name}")
-            process_theme(theme_name, rpath)
-
-    # Context for Jinja2 templates
-    screens = ["initscreen2", "miningscreen2", "portalscreen", "btcscreen", "settingsscreen", "splashscreen2", "globalStats"]
     context = {
-        'themes': theme_dirs,
-        'screens': screens
+        "themes": theme_dirs,
+        "screens": screens,
+        "theme_boards": THEME_BOARDS,
     }
 
-    # Generate themes.h using Jinja2
-    generate_file('themes.h.j2', '../themes/themes.h', context)
+    os.chdir(rpath)
+    generate_file("themes.h.j2", "../themes/themes.h", context)
+    generate_file("themes.c.j2", "../themes/themes.c", context)
 
-    # Generate themes.c using Jinja2
-    generate_file('themes.c.j2', '../themes/themes.c', context)
+
+# Main function to process themes and generate necessary files
+def main():
+    parser = argparse.ArgumentParser(description="Convert theme images and generate themes.c/h")
+    parser.add_argument(
+        "--headers-only",
+        action="store_true",
+        help="Only regenerate themes.c and themes.h, do not convert PNG",
+    )
+    args = parser.parse_args()
+
+    rpath = os.path.dirname(os.path.realpath(__file__))
+    themes_root = os.path.join(rpath, "../themes")
+    os.chdir(themes_root)
+
+    theme_dirs = sorted(
+        d for d in os.listdir(".") if os.path.isdir(d) and d in THEME_BOARDS
+    )
+    unknown_dirs = sorted(
+        d for d in os.listdir(".") if os.path.isdir(d) and d not in THEME_BOARDS
+    )
+    if unknown_dirs:
+        print(f"Skipping theme directories without BOARD mapping: {unknown_dirs}")
+
+    if not args.headers_only:
+        for theme in theme_dirs:
+            print(f"Processing theme: {theme}")
+            process_theme(theme, rpath)
+
+    generate_theme_headers(rpath, theme_dirs)
 
 if __name__ == "__main__":
     main()

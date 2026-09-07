@@ -22,10 +22,9 @@
 #define GITHUB_REPO "https://github.com/shufps/"
 
 #define FW_START 0x10000
-#define FW_LEN_MB 4
-#define FW_LEN_BYTES (FW_LEN_MB * 1024 * 1024)
+#define FW_LEN_BYTES (4352 * 1024)
 
-#define WWW_START 0x410000
+#define WWW_START 0x450000
 #define WWW_LEN_MB 3
 #define WWW_LEN_BYTES (WWW_LEN_MB * 1024 * 1024)
 

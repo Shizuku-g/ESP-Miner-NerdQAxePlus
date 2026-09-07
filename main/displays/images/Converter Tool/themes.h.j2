@@ -27,14 +27,17 @@ class Theme {
 };
 
 {% for theme in themes %}
+#if {% for board in theme_boards[theme] %}{% if not loop.first %} || {% endif %}defined({{ board }}){% endfor %}
 // image files for theme {{ theme }}
 {% for screen in screens %}
 LV_IMG_DECLARE(ui_img_{{ theme }}_{{ screen }}_png);
 {% endfor %}
+#endif
 
 {% endfor %}
 
 {% for theme in themes %}
+#if {% for board in theme_boards[theme] %}{% if not loop.first %} || {% endif %}defined({{ board }}){% endfor %}
 // class  for theme {{ theme }}
 class Theme{{ theme.capitalize() }} : public Theme {
 public:
@@ -44,6 +47,7 @@ public:
         {% endfor %}
     }
 };
+#endif
 
 {% endfor %}
 

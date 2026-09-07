@@ -42,17 +42,11 @@
 #define TDISPLAYS3_PIN_NUM_BK_LIGHT (gpio_num_t) 38 // LCD backlight control pin
 
 // LCD resolution and buffer size
-#ifdef LARGE_SCREEN
 #define TDISPLAYS3_LCD_H_RES 480
 #define TDISPLAYS3_LCD_V_RES 320
 #define LVGL_LCD_BUF_SIZE (TDISPLAYS3_LCD_H_RES * TDISPLAYS3_LCD_V_RES) / 6
 #define TDISPLAYS3_LCD_PIXEL_CLOCK_HZ (TDISPLAYS3_LCD_H_RES * TDISPLAYS3_LCD_V_RES * 80)
-#else
-#define TDISPLAYS3_LCD_H_RES 320                                            // Horizontal resolution
-#define TDISPLAYS3_LCD_V_RES 170                                            // Vertical resolution
-#define LVGL_LCD_BUF_SIZE (TDISPLAYS3_LCD_H_RES * TDISPLAYS3_LCD_V_RES) / 4 // Buffer size for display
-#define TDISPLAYS3_LCD_PIXEL_CLOCK_HZ (6528000)                             // 60 FPS @ 320x170
-#endif
+
 
 // Bit sizes for LCD commands and parameters
 #define TDISPLAYS3_LCD_CMD_BITS 8   // Bits for LCD commands
