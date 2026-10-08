@@ -47,7 +47,15 @@ class W5500 {
 
     esp_err_t earlySpiInit();
 
-    // Read VERSIONR(0x04) to determine if W5500 is in place
+    /* Override the default pins before earlySpiInit(). GPIO_NUM_NC disables a pin:
+       rst=NC => no GPIO reset (RC on the board), irq=NC => polling. */
+    void setPins(gpio_num_t sclk, gpio_num_t mosi, gpio_num_t miso, gpio_num_t cs, gpio_num_t rst, gpio_num_t irq);
+
+    /* True if a W5500 answers on these pins (reads VERSIONR). Initialises the SPI bus
+       if needed and frees it again, so it can run before earlySpiInit(). */
+    static bool probe(gpio_num_t sclk, gpio_num_t mosi, gpio_num_t miso, gpio_num_t cs);
+
+    // 驱动安装后启动以太网，用于 BV 系列等板级探测
     bool probeHardware();
     bool isHardwarePresent() const
     {
@@ -58,6 +66,12 @@ class W5500 {
     static void makeEthMacFromEfuse(uint8_t out_mac[6]);
     static void setEthMac(esp_eth_handle_t eth_handle, const char *tag);
     static void hwResetGpio(gpio_num_t rst);
+
+    /* Software reset over SPI (MR RST bit); needed because the Eth interposer has no RST pin. */
+    void swReset();
+
+    /* Single-byte register access on an initialised bus (read or write per the control byte). */
+    static esp_err_t regAccess(gpio_num_t cs, uint16_t reg, uint8_t ctrl, uint8_t *data);
 
     void onLinkUp();
     void onLinkDown();
@@ -93,5 +107,5 @@ class W5500 {
     W5500HookFn m_hookLinkDown = nullptr;
     W5500HookFn m_hookGotIp = nullptr;
 
-    const spi_host_device_t spi_host = SPI2_HOST;
+    static constexpr spi_host_device_t kSpiHost = SPI2_HOST;
 };

@@ -62,6 +62,16 @@
 #include "./NerdAxeGamma/ui_img_globalStats_png.c"
 #endif
 
+#if defined(NERDAXEGAIA)
+#include "./NerdAxeGaia/ui_img_initscreen2_png.c"
+#include "./NerdAxeGaia/ui_img_miningscreen2_png.c"
+#include "./NerdAxeGaia/ui_img_portalscreen_png.c"
+#include "./NerdAxeGaia/ui_img_btcscreen_png.c"
+#include "./NerdAxeGaia/ui_img_settingsscreen_png.c"
+#include "./NerdAxeGaia/ui_img_splashscreen2_png.c"
+#include "./NerdAxeGaia/ui_img_globalStats_png.c"
+#endif
+
 #if defined(NERDQX)
 #include "./NerdQX/ui_img_initscreen2_png.c"
 #include "./NerdQX/ui_img_miningscreen2_png.c"
